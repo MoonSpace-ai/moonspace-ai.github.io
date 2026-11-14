@@ -1,0 +1,180 @@
+{
+  "site_url": "https://moonspace-ai.github.io",
+  "updated": "2026-11-14",
+  "wechat": "QBBai10086",
+  "email": "13170331372@163.com",
+  "wiki": "https://moonspaceai.feishu.cn/wiki/D3Bawfuy9ixu1GkHyCkcfPvpn8f",
+  "source": "https://moonspaceai.feishu.cn/wiki/Km5QwCbEkiBg9HkSRajc2lDQn7x",
+  "cases": [
+    {
+      "slug": "xiaohuanxiong-chengdu",
+      "category": "活动共创 / 成都",
+      "title": "让校园里的创造力，走进真实的产品现场。",
+      "name": "小浣熊 × Datawhale 成都站",
+      "summary": "连接高校参与者、活动场地与产品体验，让学生带着真实场景上手 AI，并留下自己的作品。",
+      "tags": [
+        "高校连接",
+        "活动执行",
+        "作品共创"
+      ],
+      "theme": "mint",
+      "context": "AI 产品需要走进真实的学习与创作场景，学生也需要一个可以上手体验、提出问题、展示作品的入口。MoonSpace 参与小浣熊与 Datawhale 成都站活动的连接与落地。",
+      "actions": [
+        "协调成都天府长岛的场地与活动资源，推进活动传播。",
+        "连接四川大学、电子科技大学、四川农业大学、西南石油大学等高校的参与者。",
+        "组织现场产品体验与演示，推动学生围绕具体场景制作和提交作品。"
+      ],
+      "outputs": [
+        "高校参与者的产品体验与现场交流",
+        "活动演示、执行与传播材料",
+        "学生作品与使用场景记录"
+      ],
+      "learning": "现场见面只是起点。让参与者完成一次具体体验、留下可展示的作品，才能让活动之后的交流有内容可继续。",
+      "evidence": [
+        {
+          "label": "阅读 MoonSpace 项目记录",
+          "url": "https://moonspaceai.feishu.cn/wiki/Km5QwCbEkiBg9HkSRajc2lDQn7x"
+        },
+        {
+          "label": "查看记录中的参与者作品",
+          "url": "https://office.xiaohuanxiong.com/chat-history/fcf084a3-04a7-47ff-a869-1add0020667e"
+        }
+      ]
+    },
+    {
+      "slug": "coze-campus-practice",
+      "category": "校园实践 / 产品共创",
+      "title": "从新生的一个问题，找到 AI 的校园用法。",
+      "name": "Coze 校园应用实践",
+      "summary": "以新生入学答疑为具体场景，制作知识库问答助手，探索校园里可复用的 AI 应用实践。",
+      "tags": [
+        "场景探索",
+        "Agent 实践",
+        "经验复用"
+      ],
+      "theme": "peach",
+      "context": "校园里的 AI 使用不只有搜题。如何从学生身边的真实问题出发，找到更具体的产品价值，是这次实践关注的问题。",
+      "actions": [
+        "围绕新生入学时反复出现的问题，整理校园知识与答疑场景。",
+        "使用 Coze 制作知识库问答助手，形成能够体验的应用。",
+        "记录实现方式与使用经验，为其他院校成员开展校园实践提供参考。"
+      ],
+      "outputs": [
+        "面向校园答疑的 Agent 学业助手",
+        "应用场景与最佳实践记录",
+        "供其他院校成员参考的实践方法"
+      ],
+      "learning": "先找到一个愿意反复被解决的问题，再讨论工具能力。一个具体场景，也可以成为产品与校园建立持续连接的起点。",
+      "evidence": [
+        {
+          "label": "阅读 MoonSpace 项目记录",
+          "url": "https://moonspaceai.feishu.cn/wiki/Km5QwCbEkiBg9HkSRajc2lDQn7x"
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "意译 IntentKit",
+      "type": "设计表达 / 开源工具",
+      "description": "把「轻轻浮起来」「鼠标跟着亮」这样的感觉，变成可预览、可调整的设计描述。",
+      "url": "https://vibe-design-labs.github.io/Vibe-UI-UX/",
+      "code": "https://github.com/Vibe-Design-Labs/Vibe-UI-UX",
+      "theme": "mint",
+      "symbol": "Aa",
+      "author": "慢慢"
+    },
+    {
+      "name": "共识 Accord",
+      "type": "产品协作 / 公开预览",
+      "description": "把规范书写、交互预览与改动审阅放在同一个空间，让想法与后续实现持续对齐。",
+      "url": "https://accord-line.github.io/accord/",
+      "code": "https://github.com/Accord-Line/accord",
+      "theme": "peach",
+      "symbol": "共",
+      "author": "慢慢"
+    },
+    {
+      "name": "Life Ledger OS",
+      "type": "个人 Wiki / 静态网站",
+      "description": "一张留给作品、知识与经历的小桌面。交互框架已经公开，内容仍在持续整理。",
+      "url": "https://virtue192.github.io/zhishiku-blog-pages/",
+      "code": "https://github.com/virtue192/zhishiku-blog-pages",
+      "theme": "lilac",
+      "symbol": "⌘",
+      "author": "慢慢"
+    }
+  ],
+  "articles": [
+    {
+      "slug": "leave-a-trace",
+      "category": "个人记录",
+      "title": "成为一个有历史的人",
+      "description": "把做过的事情、当时的条件和踩过的坑留下，让后来的人有机会少摸索一些。",
+      "source": "https://moonspaceai.feishu.cn/wiki/YOj1wrhHZiwnKjkvqE1c9xoonld",
+      "intro": "一个人真正留下的历史，可以是一次选择、一份作品，也可以是一次没有做对的尝试。它们让别人有机会理解：你是怎样走到这里的。",
+      "sections": [
+        {
+          "title": "把当时的处境一起留下",
+          "text": "同一个建议，放到不同的人身上，可能会得到完全不同的结果。记录经历时，除了结果，也值得写清楚当时有什么、想要什么、受到什么限制，以及为什么做出那个选择。"
+        },
+        {
+          "title": "经验提供线索，判断仍属于读者",
+          "text": "一个人的通关记录，可以给后来的人多一点信息，但不必成为所有人的标准答案。把条件、尝试和反思放在一起，读者才能判断哪些适合自己。"
+        },
+        {
+          "title": "从一件具体的事开始",
+          "text": "不必等到经历足够精彩。可以先写一个最近完成的项目：遇到了什么问题，试过什么方法，结果如何，下次准备怎样调整。"
+        }
+      ]
+    },
+    {
+      "slug": "learn-in-public",
+      "category": "公开学习",
+      "title": "让做事的过程，被彼此看见",
+      "description": "一份正在更新的记录，可以成为反馈、陪伴与下一次合作的入口。",
+      "source": "https://moonspaceai.feishu.cn/wiki/TMqHwOyBQi5mNOkctiFcAQY6n2d",
+      "intro": "公开学习，不一定要面对很多陌生人。一个朋友、一个同伴，或者一小群期待你下一次更新的人，也可以构成你的 public。",
+      "sections": [
+        {
+          "title": "把模糊的目标，变成可以回应的进展",
+          "text": "告诉别人你正在做什么、卡在哪里、下一步准备试什么，比笼统地宣布一个大目标，更容易收到具体反馈。"
+        },
+        {
+          "title": "过程本身也有价值",
+          "text": "新手记得自己刚刚在哪里卡住。这些即时的经验，可能恰好帮助另一位正在经历同样问题的人。记录不必等到最终成果完成之后才开始。"
+        },
+        {
+          "title": "给下一次交流留一个话头",
+          "text": "有持续记录，彼此就能从上一次的进展继续聊起。慢慢地，旁观、反馈和共同尝试也有机会变成真实协作。"
+        }
+      ]
+    },
+    {
+      "slug": "introduce-yourself",
+      "category": "社区共建",
+      "title": "从介绍自己，开始连接行业",
+      "description": "用五个问题，整理一份别人看得懂、可以转发、也能继续更新的个人介绍。",
+      "source": "https://moonspaceai.feishu.cn/wiki/D3Bawfuy9ixu1GkHyCkcfPvpn8f",
+      "intro": "当别人问「你最近在做什么」「我们能一起做点什么」时，一份具体的个人介绍，能让交流更容易开始。",
+      "sections": [
+        {
+          "title": "我正在做什么，做出过什么？",
+          "text": "选择最近投入最多的一件事，说明自己负责的部分，再放上一项可以查看的作品、文章、活动记录或项目成果。"
+        },
+        {
+          "title": "我能提供什么，正在寻找什么？",
+          "text": "写清自己已经掌握的能力和可以协调的支持，以及当下需要的帮助。具体到一个可以讨论的问题，比一串宽泛的标签更容易让对方回应。"
+        },
+        {
+          "title": "我想了解哪个方向？",
+          "text": "把行业兴趣变成一个具体疑问。带着自己的实践和问题去交流，也让对方理解为什么这次对话值得发生。"
+        },
+        {
+          "title": "选择适合自己的形式",
+          "text": "一页飞书文档、一篇个人主页或一个博客入口都可以。先让介绍可分享、可更新，再和伙伴交换反馈，逐步建立自己的公开记录。"
+        }
+      ]
+    }
+  ]
+}
