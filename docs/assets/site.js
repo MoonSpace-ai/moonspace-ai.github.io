@@ -81,3 +81,47 @@ soundButton?.addEventListener('click',async()=>{
 });
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&musicOn)stopMusic();});
 window.addEventListener('pagehide',()=>{if(musicOn)stopMusic();});
+
+// Chapter atmosphere and moon lighting share one state, including filtered views.
+const journey=document.querySelector('.moon-journey');
+if(journey){
+ const moon=journey.querySelector('.journey-moon'),sceneLabel=journey.querySelector('.moon-scene-label');
+ const chapters=[...document.querySelectorAll('[data-moon-scene]')];
+ const scenes={
+  intro:{label:'初次相遇',wash:'#edf4f8',dark:'#295f88',light:'#f6fbff',phase:1,turn:-18},
+  cases:{label:'合作案例',wash:'#e3eddf',dark:'#42694d',light:'#f6faed',phase:.55,turn:15},
+  projects:{label:'社区作品',wash:'#dfedf8',dark:'#295f88',light:'#ffffff',phase:1.18,turn:-30},
+  notes:{label:'社区知识',wash:'#edf3e4',dark:'#52734e',light:'#ffffff',phase:.75,turn:25},
+  community:{label:'认识彼此',wash:'#e4eff1',dark:'#315f6b',light:'#ffffff',phase:1.05,turn:-8}
+ };
+ let activeChapter=null,pending=false;
+ function updateJourney(){
+  pending=false;
+  const visible=chapters.filter(chapter=>!chapter.hidden&&chapter.getBoundingClientRect().height>0);
+  if(!visible.length)return;
+  let active=visible[0];
+  for(const chapter of visible){if(chapter.getBoundingClientRect().top<=innerHeight*.43)active=chapter;}
+  const progress=Math.max(0,Math.min(1,scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)));
+  journey.style.setProperty('--moon-y',`${progress*160}px`);journey.style.setProperty('--moon-x',`${progress*46}px`);
+  if(active!==activeChapter){
+   activeChapter?.classList.remove('is-moon-current');active.classList.add('is-moon-current');activeChapter=active;
+   const key=active.dataset.moonScene,state=scenes[key]||scenes.intro;
+   journey.dataset.scene=key;sceneLabel.textContent=state.label;moon.setAttribute('aria-label',`${state.label}，回到本节开头`);
+   for(const [name,value] of Object.entries({'journey-wash':state.wash,'moon-dark':state.dark,'moon-bright':state.light,'moon-phase':state.phase,'moon-turn':`${state.turn}deg`}))journey.style.setProperty(`--${name}`,value);
+  }
+ }
+ function queueJourney(){if(!pending){pending=true;requestAnimationFrame(updateJourney);}}
+ addEventListener('scroll',queueJourney,{passive:true});addEventListener('resize',queueJourney,{passive:true});
+ document.fonts?.ready.then(queueJourney);
+ document.querySelectorAll('.community-collage img').forEach(img=>img.addEventListener('load',queueJourney,{once:true}));
+ filters.forEach(button=>button.addEventListener('click',()=>{
+  document.querySelectorAll('.discovery-chapter').forEach(chapter=>{chapter.hidden=[...chapter.querySelectorAll('[data-kind]')].every(card=>card.hidden);});
+  queueJourney();
+ }));
+ moon.addEventListener('click',()=>{
+  moon.classList.remove('is-rippling');void moon.offsetWidth;moon.classList.add('is-rippling');
+  activeChapter?.scrollIntoView({behavior:reducedMotion.matches?'instant':'smooth',block:'start'});
+ });
+ moon.addEventListener('animationend',()=>moon.classList.remove('is-rippling'));
+ journey.hidden=false;updateJourney();
+}
