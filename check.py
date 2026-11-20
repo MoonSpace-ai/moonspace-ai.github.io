@@ -41,7 +41,7 @@ for f in ROOT.rglob('*.html'):
         if not u.path:
             if u.fragment:assert u.fragment in p.ids,(f,href)
             continue
-        target=ROOT/unquote(u.path).lstrip('/')
+        target=(ROOT/unquote(u.path).lstrip('/')) if u.path.startswith('/') else f.parent/unquote(u.path)
         if u.path.endswith('/'):target=target/'index.html'
         assert target.is_file(),(f,href,target)
     count+=1

@@ -129,6 +129,7 @@ page('/join/','参与与合作','通过微信或邮件联系 MoonSpace，分享�
 
 page('/404.html','这个页面还没有抵达','回到 MoonSpace，继续认识人、发现作品与探索真实实践。','<section class="container empty404"><h1>404</h1><h2>这个页面，还没有抵达。</h2><p>换一个入口，继续逛逛这个小宇宙。</p>'+button('/','回到首页')+'</section>')
 
+PAGES.append(('/intro/','个人说明书工坊','整理实践、作品和合作意向，本地保存并导出个人说明书。'))
 (OUT/'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {ORIGIN}/sitemap.xml\n')
 (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f'<url><loc>{xml_escape(ORIGIN+path)}</loc><lastmod>{D["updated"]}</lastmod></url>' for path,_,_ in PAGES)+'</urlset>')
 (OUT/'feed.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>MoonSpace 社区知识</title><link>'+ORIGIN+'/knowledge/</link><description>真实经历、公开学习与共同创造。</description><language>zh-CN</language>'+''.join(f'<item><title>{xml_escape(a["title"])}</title><link>{ORIGIN}/knowledge/{a["slug"]}/</link><guid>{ORIGIN}/knowledge/{a["slug"]}/</guid><description>{xml_escape(a["description"])}</description></item>' for a in D['articles'])+'</channel></rss>')
