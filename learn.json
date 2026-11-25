@@ -8,6 +8,8 @@
     "starts_on": null,
     "registration_deadline": null,
     "registration_url": null,
+    "full": false,
+    "waitlist_url": null,
     "submission_url": null,
     "group_url": null
   },
