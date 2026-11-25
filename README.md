@@ -34,3 +34,15 @@ python3 check.py
 | `registration_deadline` | 可选的报名截止日期，格式为 `YYYY-MM-DD`（北京时间） |
 
 填入真实链接后，用外部身份核对表单权限和群入口，再按上面的流程重新生成并发布。
+
+## 产品体验招募
+
+`/testing/` 从 `testing.json` 的数组读取活动。每项填写 `title`（活动标题）、`summary`（体验内容）和 `status`。可按需填写 `audience`（招募对象）、`effort`（预计用时）和 `feedback_focus`（希望收到的反馈）。
+
+| 状态 | 页面入口 |
+| --- | --- |
+| `recruiting` | 用 `registration_url` 显示「报名体验」。可填写 `registration_deadline`（北京时间，`YYYY-MM-DD`）。要停止招募，请切换状态。 |
+| `feedback` | 用 `feedback_url` 显示「提交反馈」。 |
+| `closed` | 在往期活动展示，可用 `recap_url` 链接回顾。 |
+
+链接均为公开 HTTPS 地址。没有活动时保留空数组 `[]`。配置后按官网流程重新生成并发布。

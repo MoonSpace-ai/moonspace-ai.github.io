@@ -3,6 +3,7 @@
 import json
 import re
 from learn import render_learn
+from testing import render_testing
 from html import escape as e
 from pathlib import Path
 from xml.sax.saxutils import escape as xml_escape
@@ -131,6 +132,7 @@ page('/join/','参与与合作','通过微信或邮件联系 MoonSpace，分享�
 page('/404.html','这个页面还没有抵达','回到 MoonSpace，继续认识人、发现作品与探索真实实践。','<section class="container empty404"><h1>404</h1><h2>这个页面，还没有抵达。</h2><p>换一个入口，继续逛逛这个小宇宙。</p>'+button('/','回到首页')+'</section>')
 
 render_learn(ROOT, page, button, external)
+render_testing(ROOT, page, external)
 
 PAGES.append(('/intro/','个人说明书工坊','整理实践、作品和合作意向，本地保存并导出个人说明书。'))
 (OUT/'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {ORIGIN}/sitemap.xml\n')
