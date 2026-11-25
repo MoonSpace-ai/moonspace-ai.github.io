@@ -12,12 +12,14 @@ if (copyPrompt) {
   });
 }
 
-const registration = document.querySelector('[data-registration-deadline]');
-if (registration) {
+const registrations = document.querySelectorAll('[data-registration-deadline]');
+if (registrations.length) {
   const today = new Intl.DateTimeFormat('sv-SE', {timeZone: 'Asia/Shanghai'}).format(new Date());
-  const closed = today > registration.dataset.registrationDeadline;
-  registration.querySelector('a').hidden = closed;
-  registration.querySelector('strong').hidden = !closed;
+  for (const registration of registrations) {
+    const closed = today > registration.dataset.registrationDeadline;
+    registration.firstElementChild.hidden = closed;
+    registration.lastElementChild.hidden = !closed;
+  }
 }
 
 const quiz = document.querySelector('#learn-quiz');

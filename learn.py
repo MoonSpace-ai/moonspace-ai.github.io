@@ -43,8 +43,19 @@ def render_learn(root, page, button, external):
     )
     if register_url and deadline:
         register_action = (
-            f'<div data-registration-deadline="{deadline}">{register_action}'
+            f'<div data-registration-deadline="{deadline}"><span>{register_action}</span>'
             '<strong hidden>报名已截止</strong></div>'
+        )
+    banner_link = (
+        external(register_url, '打开飞书报名表', 'learn-banner-link')
+        if register_url else '<a class="learn-banner-link" href="#register">查看报名安排</a>'
+    )
+    banner_title = '首期报名已开放' if register_url else '首期报名即将开启'
+    banner_content = f'<strong>{banner_title}</strong>{banner_link}'
+    if register_url and deadline:
+        banner_content = (
+            f'<div class="learn-banner-content" data-registration-deadline="{deadline}">'
+            f'<span>{banner_content}</span><strong hidden>首期报名已截止</strong></div>'
         )
     submit_action = (
         external(submit_url, '打开飞书作品提交表', 'button')
@@ -77,6 +88,7 @@ def render_learn(root, page, button, external):
                  f'{button("/learn/quiz/", "试做示例", True)}</div>')
 
     body = f'''<div class="container learn">
+<aside class="learn-banner" aria-label="首期报名通知">{banner_content}</aside>
 <nav class="learn-nav" aria-label="共学导航">
   <a href="#task">当期任务</a><a href="/learn/quiz/">小测示例</a>
   <a href="#showcase">精选作品</a><a href="#register">报名与入群</a><a href="#submit">提交作品</a>
