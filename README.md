@@ -25,6 +25,7 @@ python3 check.py
 | 配置项 | 填写内容 |
 | --- | --- |
 | `registration_url` | 可外部填写的飞书报名表 HTTPS 链接 |
+| `closed` | 设为 `true` 时，共学首页只显示「首期已结束」和下期预告，此设置优先于 `full`。默认 `false` |
 | `full` | 设为 `true` 显示「首期已满员」，并用候补入口替换报名入口。默认 `false` |
 | `waitlist_url` | 可公开展示的飞书候补群 HTTPS 链接。满员时启用，留空显示「候补群入口待开放」 |
 | `submission_url` | 可外部填写的飞书作品提交表 HTTPS 链接 |

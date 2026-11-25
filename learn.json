@@ -9,6 +9,7 @@
     "registration_deadline": null,
     "registration_url": null,
     "full": false,
+    "closed": false,
     "waitlist_url": null,
     "submission_url": null,
     "group_url": null

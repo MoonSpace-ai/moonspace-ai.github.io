@@ -20,7 +20,91 @@ def list_items(items):
 
 def render_learn(root, page, button, external):
     data = json.loads((root / 'learn.json').read_text())
+    cohort, quiz = data['cohort'], data['quiz']
+    closed = cohort.get('closed', False)
+    if type(closed) is not bool:
+        raise ValueError('Set cohort.closed to true or false.')
+    assets = '<link rel="stylesheet" href="/learn/learn.css"><script defer src="/learn/learn.js"></script>'
+    course = e(quiz['course'])
+    quiz_title = e(quiz['title'])
+    if closed:
+        body = '''<div class="container learn">
+<section class="learn-section learn-panel" aria-labelledby="learn-closed-title">
+  <p class="section-label">MoonSpace 项目共学社区</p>
+  <h1 id="learn-closed-title">首期已结束</h1>
+  <h2>下期预告</h2>
+  <p>下期的开营时间和共学任务待公布。</p>
+</section>
+</div>'''
+        page('/learn/', '项目共学社区', '首期已结束，下期开营时间和任务待公布。', body, extra_head=assets)
+    else:
+        render_open_learn(data, page, button, external, assets)
+
+    quiz_questions = []
+    for number, item in enumerate(quiz['questions'], 1):
+        options = ''.join(
+            f'<label><input type="radio" name="q{number}" value="{index}" required>'
+            f'<span>{e(option)}</span></label>'
+            for index, option in enumerate(item['options'])
+        )
+        answer = item['answer']
+        quiz_questions.append(
+            f'<fieldset data-answer="{answer}"><legend>{number}. {e(item["question"])}</legend>'
+            f'<div class="learn-options">{options}</div><div class="learn-explanation" hidden>'
+            f'<strong></strong><p>正确答案：{e(item["options"][answer])}</p>'
+            f'<p>{e(item["explanation"])}</p></div></fieldset>'
+        )
+    task_link = '' if closed else '<a href="/learn/#task">当期任务</a>'
+    quiz_body = f'''<div class="container learn learn-quiz">
+<nav class="learn-nav" aria-label="共学导航"><a href="/learn/">共学首页</a>{task_link}</nav>
+<header class="learn-quiz-head">
+  <p class="section-label">首期成品示例 · {course}</p>
+  <h1>{quiz_title}</h1>
+  <p>每题选一个答案。交卷后会显示分数、正确答案和解析。答题记录只保留在当前页面。</p>
+</header>
+<noscript><p>请启用 JavaScript 后作答并查看解析。</p></noscript>
+<form id="learn-quiz">
+  <p id="learn-result" class="learn-result" tabindex="-1" role="status" hidden></p>
+  {''.join(quiz_questions)}
+  <div class="learn-quiz-actions" hidden><p id="learn-progress">已答 0 / {len(quiz_questions)} 题</p>
+    <button class="button" type="submit">交卷并查看解析</button>
+    <button class="button secondary" type="reset" hidden>再做一次</button>
+  </div>
+</form>
+</div>'''
+    page('/learn/quiz/', quiz['title'], '试做统计学期末五道单选题，交卷后查看分数和逐题解析。', quiz_body, extra_head=assets)
+
+    # Reuse the quiz markup and behavior in an offline, editable HTML download.
+    quiz_form = quiz_body[quiz_body.index('<noscript>'):quiz_body.index('</form>') + len('</form>')]
+    style = (root / 'docs/learn/learn.css').read_text()
+    script = (root / 'docs/learn/learn.js').read_text()
+    template_url = 'https://moonspace-ai.github.io/learn/quiz/template.html'
+    template_schema = json.dumps({
+        '@context': 'https://schema.org', '@type': 'LearningResource', 'url': template_url,
+        'name': quiz['title'], 'inLanguage': 'zh-CN'
+    }, ensure_ascii=False).replace('<', chr(92) + 'u003c')
+    (root / 'docs/learn/quiz/template.html').write_text(f'''<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{quiz_title}</title><meta name="description" content="可离线试做和修改的 MoonSpace 小测模板。">
+<link rel="canonical" href="{template_url}"><link rel="icon" href="/assets/moonspace-logo.png">
+<script type="application/ld+json">{template_schema}</script>
+<style>{style}
+:root {{ --line: #dbe3d8; --paper: #f8f8f4; }}
+* {{ box-sizing: border-box; }}
+body {{ margin: 20px; font: 1rem/1.6 system-ui, sans-serif; color: #25352f; background: var(--paper); }}
+.learn {{ margin: auto; }}
+[hidden] {{ display: none !important; }}
+.button {{ min-height: 44px; padding: 7px 18px; font: inherit; background: #173c35; color: white; border: 0; border-radius: 24px; cursor: pointer; }}
+</style></head><body><main class="learn learn-quiz"><h1>{quiz_title}</h1>
+<p>每题选一个答案，交卷后查看分数与解析。</p>
+<!-- 修改每组 fieldset 的题干、选项和解析。data-answer 填正确选项的 value（0 到 3）。 -->
+{quiz_form}
+</main><script>{script}</script></body></html>''')
+
+
+def render_open_learn(data, page, button, external, assets):
     cohort, task, quiz = (data[key] for key in ('cohort', 'task', 'quiz'))
+    course = e(quiz['course'])
     deadline = cohort['registration_deadline']
     if deadline:
         date.fromisoformat(deadline)
@@ -90,9 +174,7 @@ def render_learn(root, page, button, external):
         if group_url else '<strong>群入口待开放</strong>'
     )
     heading = e(task['title'])
-    course = e(quiz['course'])
     topic = e(quiz['topic'])
-    quiz_title = e(quiz['title'])
     steps = ''.join(
         f'<li><span>{e(day)}</span><div><h3>{e(title)}</h3><p>{e(body)}</p></div></li>'
         for day, title, body in task['steps']
@@ -172,65 +254,4 @@ def render_learn(root, page, button, external):
   <h2>精选作品</h2>{works}
 </section>
 </div>'''
-    assets = '<link rel="stylesheet" href="/learn/learn.css"><script defer src="/learn/learn.js"></script>'
     page('/learn/', '项目共学社区', task['summary'], body, extra_head=assets)
-
-    quiz_questions = []
-    for number, item in enumerate(quiz['questions'], 1):
-        options = ''.join(
-            f'<label><input type="radio" name="q{number}" value="{index}" required>'
-            f'<span>{e(option)}</span></label>'
-            for index, option in enumerate(item['options'])
-        )
-        answer = item['answer']
-        quiz_questions.append(
-            f'<fieldset data-answer="{answer}"><legend>{number}. {e(item["question"])}</legend>'
-            f'<div class="learn-options">{options}</div><div class="learn-explanation" hidden>'
-            f'<strong></strong><p>正确答案：{e(item["options"][answer])}</p>'
-            f'<p>{e(item["explanation"])}</p></div></fieldset>'
-        )
-    quiz_body = f'''<div class="container learn learn-quiz">
-<nav class="learn-nav" aria-label="共学导航"><a href="/learn/">共学首页</a><a href="/learn/#task">当期任务</a></nav>
-<header class="learn-quiz-head">
-  <p class="section-label">首期成品示例 · {course}</p>
-  <h1>{quiz_title}</h1>
-  <p>每题选一个答案。交卷后会显示分数、正确答案和解析。答题记录只保留在当前页面。</p>
-</header>
-<noscript><p>请启用 JavaScript 后作答并查看解析。</p></noscript>
-<form id="learn-quiz">
-  <p id="learn-result" class="learn-result" tabindex="-1" role="status" hidden></p>
-  {''.join(quiz_questions)}
-  <div class="learn-quiz-actions" hidden><p id="learn-progress">已答 0 / {len(quiz_questions)} 题</p>
-    <button class="button" type="submit">交卷并查看解析</button>
-    <button class="button secondary" type="reset" hidden>再做一次</button>
-  </div>
-</form>
-</div>'''
-    page('/learn/quiz/', quiz['title'], '试做统计学期末五道单选题，交卷后查看分数和逐题解析。', quiz_body, extra_head=assets)
-
-    # Reuse the quiz markup and behavior in an offline, editable HTML download.
-    quiz_form = quiz_body[quiz_body.index('<noscript>'):quiz_body.index('</form>') + len('</form>')]
-    style = (root / 'docs/learn/learn.css').read_text()
-    script = (root / 'docs/learn/learn.js').read_text()
-    template_url = 'https://moonspace-ai.github.io/learn/quiz/template.html'
-    template_schema = json.dumps({
-        '@context': 'https://schema.org', '@type': 'LearningResource', 'url': template_url,
-        'name': quiz['title'], 'inLanguage': 'zh-CN'
-    }, ensure_ascii=False).replace('<', chr(92) + 'u003c')
-    (root / 'docs/learn/quiz/template.html').write_text(f'''<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{quiz_title}</title><meta name="description" content="可离线试做和修改的 MoonSpace 小测模板。">
-<link rel="canonical" href="{template_url}"><link rel="icon" href="/assets/moonspace-logo.png">
-<script type="application/ld+json">{template_schema}</script>
-<style>{style}
-:root {{ --line: #dbe3d8; --paper: #f8f8f4; }}
-* {{ box-sizing: border-box; }}
-body {{ margin: 20px; font: 1rem/1.6 system-ui, sans-serif; color: #25352f; background: var(--paper); }}
-.learn {{ margin: auto; }}
-[hidden] {{ display: none !important; }}
-.button {{ min-height: 44px; padding: 7px 18px; font: inherit; background: #173c35; color: white; border: 0; border-radius: 24px; cursor: pointer; }}
-</style></head><body><main class="learn learn-quiz"><h1>{quiz_title}</h1>
-<p>每题选一个答案，交卷后查看分数与解析。</p>
-<!-- 修改每组 fieldset 的题干、选项和解析。data-answer 填正确选项的 value（0 到 3）。 -->
-{quiz_form}
-</main><script>{script}</script></body></html>''')
