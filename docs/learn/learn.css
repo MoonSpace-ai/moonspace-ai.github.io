@@ -25,7 +25,7 @@
 .learn-section { margin-top: clamp(42px, 7vw, 85px); }
 .learn-columns, .learn-entry { display: grid; gap: 20px; align-items: start; }
 .learn-columns { grid-template-columns: 1.55fr 1fr; }
-.learn-entry { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+.learn-entry { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
 .learn-panel, .learn-empty, .learn-quiz fieldset { padding: clamp(16px, 3vw, 30px); border: 1px solid var(--line); border-radius: 18px; background: #fff; }
 .learn-standard { background: var(--learn-light); }
 .learn-standard ul { padding-inline-start: 1.4em; }

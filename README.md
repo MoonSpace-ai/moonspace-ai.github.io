@@ -19,4 +19,15 @@ python3 check.py
 
 ## 项目共学社区
 
-`/learn/` 的期次、任务、示例课程、小测和作品都在 `learn.json`。待确定的日期和飞书链接用 `null`，日期使用 `YYYY-MM-DD`（报名截止当天以北京时间为准）。配置前请从外部身份试开报名和提交表。精选作品仅渲染 `approved: true` 且有 HTTPS 作答链接的条目，移除该条可下架。更新后照常运行 `python3 build.py` 和 `python3 check.py`，提交源码及 `docs/` 产物。
+`/learn/` 的期次、任务、示例课程、小测和作品都在 `learn.json`。在 `cohort` 中填写以下配置。未确定时保留 `null`，页面会显示待开放或待公布。精选作品仅渲染 `approved: true` 且有 HTTPS 作答链接的条目，移除该条可下架。更新后照常运行 `python3 build.py` 和 `python3 check.py`，提交源码及 `docs/` 产物。
+
+
+| 配置项 | 填写内容 |
+| --- | --- |
+| `registration_url` | 可外部填写的飞书报名表 HTTPS 链接 |
+| `submission_url` | 可外部填写的飞书作品提交表 HTTPS 链接 |
+| `group_url` | 可公开展示的飞书共学群 HTTPS 链接 |
+| `starts_on` | 开营日期，格式为 `YYYY-MM-DD` |
+| `registration_deadline` | 可选的报名截止日期，格式为 `YYYY-MM-DD`（北京时间） |
+
+填入真实链接后，用外部身份核对表单权限和群入口，再按上面的流程重新生成并发布。

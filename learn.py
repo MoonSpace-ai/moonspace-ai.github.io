@@ -25,8 +25,10 @@ def render_learn(root, page, button, external):
     if deadline:
         date.fromisoformat(deadline)
     starts = cohort['starts_on']
-    if starts:
-        date.fromisoformat(starts)
+    start_display = (
+        f'<time datetime="{date.fromisoformat(starts).isoformat()}">{e(starts)}</time>'
+        if starts else '待公布'
+    )
 
     register_url = https_url(cohort['registration_url'])
     submit_url = https_url(cohort['submission_url'])
@@ -50,7 +52,7 @@ def render_learn(root, page, button, external):
     )
     group_action = (
         external(group_url, '打开飞书共学群', 'button secondary')
-        if group_url else '<p>录取后由运营发放报名编号和入群方式。</p>'
+        if group_url else '<strong>群入口待开放</strong>'
     )
     heading = e(task['title'])
     course = e(quiz['course'])
@@ -77,7 +79,7 @@ def render_learn(root, page, button, external):
     body = f'''<div class="container learn">
 <nav class="learn-nav" aria-label="共学导航">
   <a href="#task">当期任务</a><a href="/learn/quiz/">小测示例</a>
-  <a href="#showcase">精选作品</a><a href="#submit">提交作品</a>
+  <a href="#showcase">精选作品</a><a href="#register">报名与入群</a><a href="#submit">提交作品</a>
 </nav>
 <section class="learn-hero">
   <div class="learn-intro">
@@ -98,7 +100,7 @@ def render_learn(root, page, button, external):
   <div><dt>共学周期</dt><dd>{e(cohort['duration'])}</dd></div>
   <div><dt>首期名额</dt><dd>{e(cohort['capacity'])}</dd></div>
   <div><dt>预计总投入</dt><dd>{e(cohort['effort'])}</dd></div>
-  <div><dt>开营日期</dt><dd>{e(starts or '待公布')}</dd></div>
+  <div><dt>开营日期</dt><dd>{start_display}</dd></div>
 </dl>
 <section id="task" class="learn-section">
   <h2>首期任务卡</h2>
@@ -117,11 +119,14 @@ def render_learn(root, page, button, external):
       {button('/learn/quiz/', '查看成品示例', True)}
     </aside>
   </div>
-  <details class="learn-panel learn-help"><summary>工具与群内求助</summary>{resources}<p><a class="text-link" href="/learn/quiz/template.html" download="moonspace-quiz.html">下载单文件小测模板</a>。下载后可在浏览器离线试做，修改题目、答案和解析后可发布为自己的作答链接。</p>{group_action}</details>
+  <details class="learn-panel learn-help"><summary>工具与群内求助</summary>{resources}<p><a class="text-link" href="/learn/quiz/template.html" download="moonspace-quiz.html">下载单文件小测模板</a>。下载后可在浏览器离线试做，修改题目、答案和解析后可发布为自己的作答链接。</p><a class="text-link" href="#group">查看共学群入口</a></details>
 </section>
-<section class="learn-section learn-entry" aria-label="报名与作品提交">
+<section class="learn-section learn-entry" aria-label="报名、入群与作品提交">
   <article class="learn-panel" id="register"><h2>报名首期</h2>{register_status}
     <p>录取后会收到报名编号和共学群入口。现在就可以阅读任务卡、试做示例。</p>{register_action}
+  </article>
+  <article class="learn-panel" id="group"><h2>加入共学群</h2>
+    <p>入营后在群里发「课程＋章节」开工，遇到卡点也可以在群里求助。</p>{group_action}
   </article>
   <article class="learn-panel" id="submit"><h2>提交作品</h2>
     <p>准备好报名编号、作答链接、题数、核查说明和同学试做记录。补交时使用原报名编号。</p>{submit_action}
