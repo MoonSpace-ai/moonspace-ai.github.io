@@ -23,3 +23,8 @@
 @media (max-width: 420px) {
   .testing-facts div { grid-template-columns: 1fr; gap: 0; }
 }
+.testing-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.testing-filters button { min-height: 44px; max-width: 100%; overflow-wrap: anywhere; padding: 5px 15px; border: 1px solid #b6c6bb; border-radius: 24px; color: #173c35; background: var(--white); }
+.testing-filters button[aria-pressed="true"] { background: #173c35; border-color: #173c35; color: #fff; }
+.testing-tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0 0 14px; }
+.testing-tags li { font-size: .82rem; padding: 2px 8px; border-radius: 8px; background: #f1f4ed; color: #42554a; }
