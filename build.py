@@ -2,6 +2,7 @@
 """Build MoonSpace's static site using Python's standard library only."""
 import json
 import re
+from learn import render_learn
 from html import escape as e
 from pathlib import Path
 from xml.sax.saxutils import escape as xml_escape
@@ -40,14 +41,14 @@ def footer():
     return f'''<footer class="footer"><div class="container"><div class="footer-main"><div class="footer-intro"><a class="footer-brand" href="/">MoonSpace</a><p>把工具还给工具，把人还给人。</p></div><div class="footer-links"><a href="/cases/">合作案例</a><a href="/people/">人与作品</a><a href="/knowledge/">社区知识</a></div><div class="footer-links"><a href="/join/">联系社区</a>{external(D['wiki'],'飞书知识库')}{external('https://github.com/MoonSpace-ai/moonspace-ai','GitHub')}<a href="/feed.xml">RSS 订阅</a></div></div><div class="footer-bottom"><span>© 2026 MoonSpace</span><a href="/about/">一个正在生长的 AI 创造者社区。</a></div></div></footer>'''
 
 
-def page(path,title,description,body,active='',schema_type='WebPage',author=None):
+def page(path,title,description,body,active='',schema_type='WebPage',author=None,extra_head=''):
     canonical=ORIGIN+path
     schema={'@context':'https://schema.org','@type':schema_type,'name':title,'description':description,'url':canonical,'inLanguage':'zh-CN','isPartOf':{'@type':'WebSite','name':'MoonSpace','url':ORIGIN+'/'}}
     if schema_type=='Article':
         schema.update(headline=title,datePublished=D['updated'],dateModified=D['updated'],author={'@type':'Person','name':author or '慢慢'},publisher={'@type':'Organization','name':'MoonSpace','url':ORIGIN+'/'})
     if path=='/': schema={'@context':'https://schema.org','@type':'Organization','name':'MoonSpace','alternateName':'MoonSpace.ai','url':canonical,'logo':ORIGIN+'/assets/moonspace-logo.png','description':description,'sameAs':['https://github.com/MoonSpace-ai/moonspace-ai']}
     schema_json=json.dumps(schema,ensure_ascii=False).replace('<',chr(92)+'u003c')
-    html=f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)} · MoonSpace</title><meta name="description" content="{e(description,quote=True)}"><meta name="theme-color" content="#f6f6f2"><link rel="canonical" href="{canonical}"><meta property="og:type" content="{'article' if schema_type=='Article' else 'website'}"><meta property="og:locale" content="zh_CN"><meta property="og:site_name" content="MoonSpace"><meta property="og:title" content="{e(title,quote=True)}"><meta property="og:description" content="{e(description,quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{ORIGIN}/assets/logo.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/moonspace-logo.png" type="image/png"><link rel="alternate" type="application/rss+xml" title="MoonSpace 社区知识" href="/feed.xml"><link rel="stylesheet" href="/assets/site.css?v=20261115-journey"><script type="application/ld+json">{schema_json}</script><script defer src="/assets/site.js?v=20261115-journey"></script></head><body>{header(active)}<main id="main">{body}</main>{footer()}<button class="sound-toggle" type="button" aria-pressed="false" aria-label="开启纯音乐"><span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="sound-label">开启音乐</span></button><span class="pointer-halo" aria-hidden="true"></span></body></html>'''
+    html=f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)} · MoonSpace</title><meta name="description" content="{e(description,quote=True)}"><meta name="theme-color" content="#f6f6f2"><link rel="canonical" href="{canonical}"><meta property="og:type" content="{'article' if schema_type=='Article' else 'website'}"><meta property="og:locale" content="zh_CN"><meta property="og:site_name" content="MoonSpace"><meta property="og:title" content="{e(title,quote=True)}"><meta property="og:description" content="{e(description,quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{ORIGIN}/assets/logo.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/moonspace-logo.png" type="image/png"><link rel="alternate" type="application/rss+xml" title="MoonSpace 社区知识" href="/feed.xml"><link rel="stylesheet" href="/assets/site.css?v=20261115-journey"><script type="application/ld+json">{schema_json}</script><script defer src="/assets/site.js?v=20261115-journey"></script>{extra_head}</head><body>{header(active)}<main id="main">{body}</main>{footer()}<button class="sound-toggle" type="button" aria-pressed="false" aria-label="开启纯音乐"><span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="sound-label">开启音乐</span></button><span class="pointer-halo" aria-hidden="true"></span></body></html>'''
     dest=OUT/('index.html' if path=='/' else path.strip('/')+'/index.html')
     if path=='/404.html':dest=OUT/'404.html'
     dest.parent.mkdir(parents=True,exist_ok=True)
@@ -128,6 +129,8 @@ body='<div class="container">'+page_head('LET’S MAKE SOMETHING / 参与与合�
 page('/join/','参与与合作','通过微信或邮件联系 MoonSpace，分享你的作品、个人介绍或产品合作问题。一起讨论项目目标、交付与成员回报。',body)
 
 page('/404.html','这个页面还没有抵达','回到 MoonSpace，继续认识人、发现作品与探索真实实践。','<section class="container empty404"><h1>404</h1><h2>这个页面，还没有抵达。</h2><p>换一个入口，继续逛逛这个小宇宙。</p>'+button('/','回到首页')+'</section>')
+
+render_learn(ROOT, page, button, external)
 
 PAGES.append(('/intro/','个人说明书工坊','整理实践、作品和合作意向，本地保存并导出个人说明书。'))
 (OUT/'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {ORIGIN}/sitemap.xml\n')
